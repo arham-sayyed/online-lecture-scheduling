@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin • <%= user.displayName %></title>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta3/css/bootstrap.min.css"
+        integrity="sha512-N415hCJJdJx+1UBfULt+i+ihvOn42V/kOjOpp1UTh4CZ70Hx5bDlKryWaqEKfY/8EYOu/C2MuyaluJryK1Lb5Q=="
+        crossorigin="anonymous"
+    />
+    <style>
+        body {
+            display: flex;
+        }
+        .side-navbar {
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            background-color: #343a40;
+            padding-top: 20px;
+        }
+        .side-navbar a {
+            padding: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+        .side-navbar a:hover, .side-navbar a.active {
+            background-color: #007bff;
+        }
+        .content {
+            margin-left: 260px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><%= user.displayName %></a>
+            <!-- Logout button -->
+            <button class="btn btn-outline-danger" type="button" onclick="logout()">
+                logout
+            </button>
+        </div>
+    </nav>
+    <!-- End of Navbar -->
+
+    <!-- Side Navbar -->
+    <div class="side-navbar">
+        <a href="/admin" >Dashboard</a>
+        <a href="/admin/viewInstructors" class="active">view all instructors</a>
+        <a href="/admin/courses">view all courses</a>
+        <a href="/admin/addUser">add new user</a>
+        <a href="/admin/addNewCourse">add new Course</a>
+        <a href="/logout">logout</a>
+    </div>
+    <!-- End of Side Navbar -->
+
+    <!-- Content Area -->
+    <div class="content">
+        <h1>Instructors</h1>
+        <p>list of all instructors</p>
+        <hr>
+        <% instructors.forEach(instructor => { %>
+        <div class="card mb-3 mx-5" style="max-width: 540px">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img
+                        src="<%= instructor.photoURL %>"
+                        class="img-fluid rounded-start h-100 w-100"
+                        alt="<%= instructor.displayName %>"
+                    />
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= instructor.displayName %></h5>
+                        <p class="card-text">email: <%= instructor.email %></p>
+                    </div>
+                </div>
+                <a href="/admin/deleteInstructor/<%= instructor.id %>" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+    <!-- End of Content Area -->
+
+    <script>
+        function logout() {
+            fetch('/logout', {
+                method: 'GET',
+            })
+            .then((res) => {
+                console.log(res);
+                window.location.href = '/';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Highlight the active menu item
+        const navLinks = document.querySelectorAll('.side-navbar a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.forEach(link => link.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta3/js/bootstrap.min.js"
+        integrity="sha512-mp3VeMpuFKbgxm/XMUU4QQUcJX4AZfV5esgX72JQr7H7zWusV6lLP1S78wZnX2z9dwvywil1VHkHZAqfGOW7Nw=="
+        crossorigin="anonymous"
+    ></script>
+</body>
+</html>

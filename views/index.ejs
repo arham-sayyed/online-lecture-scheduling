@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta3/css/bootstrap.min.css"
+      integrity="sha512-N415hCJJdJx+1UBfULt+i+ihvOn42V/kOjOpp1UTh4CZ70Hx5bDlKryWaqEKfY/8EYOu/C2MuyaluJryK1Lb5Q=="
+      crossorigin="anonymous"
+    />
+    <style>
+      * {
+        font-family: 'Poppins';
+      }
+
+      body {
+        user-select: none;
+        overflow-y: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: hsl(218deg 50% 91%);
+        height: 100vh;
+        margin: 0;
+      }
+
+      .screen-1 {
+        background: hsl(213deg 85% 97%);
+        padding: 2em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 30px;
+        box-shadow: 0 0 2em hsl(231deg 62% 94%);
+        gap: 2em;
+      }
+
+      .screen-1 .logo {
+        display: flex;
+        justify-content: center;
+        margin-top: -3em;
+      }
+
+      .screen-1 .logo div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: black;
+        height: 100px;
+        width: 100px;
+        transition: box-shadow 0.3s ease;
+      }
+
+      .screen-1 .logo div:hover {
+        box-shadow: 0 0 20px white;
+      }
+
+      .screen-1 .email,
+      .screen-1 .password {
+        background: hsl(0deg 0% 100%);
+        box-shadow: 0 0 2em hsl(231deg 62% 94%);
+        padding: 1em;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+        border-radius: 20px;
+        color: hsl(0deg 0% 30%);
+        width: 100%;
+      }
+
+      .screen-1 .email input,
+      .screen-1 .password input {
+        outline: none;
+        border: none;
+      }
+
+      .screen-1 .email input::placeholder,
+      .screen-1 .password input::placeholder {
+        color: hsl(0deg 0% 0%);
+        font-size: 0.9em;
+      }
+
+      .screen-1 .email ion-icon,
+      .screen-1 .password ion-icon {
+        color: hsl(0deg 0% 30%);
+        margin-bottom: -0.2em;
+      }
+
+      .screen-1 .password .show-hide {
+        margin-right: -5em;
+      }
+
+      .screen-1 .login {
+        padding: 1em;
+        background: hsl(233deg 36% 38%);
+        color: hsl(0 0 100);
+        border: none;
+        border-radius: 30px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .screen-1 .footer {
+        display: flex;
+        font-size: 0.7em;
+        color: hsl(0deg 0% 37%);
+        gap: 14em;
+        padding-bottom: 10em;
+      }
+
+      .screen-1 .footer span {
+        cursor: pointer;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 0.8em;
+        margin-top: -1em;
+      }
+
+      button {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="loginForm" action="/" method="post">
+      <div class="screen-1">
+        <div class="logo">
+          <div>
+            <span style="color: white; font-size: 2em">🚀</span>
+          </div>
+        </div>
+        <label for="email">Email Address</label>
+        <div class="email">
+          <ion-icon name="mail-outline"></ion-icon>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Username@gmail.com"
+          />
+          <div id="emailError" class="error-message"></div>
+        </div>
+        <label for="password">Password</label>
+        <div class="password">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          <input
+            class="pas"
+            type="password"
+            id="password"
+            name="password"
+            placeholder="············"
+          />
+          <div id="passwordError" class="error-message"></div>
+        </div>
+        <button type="button" class="login" onclick="validateForm()">
+          Login
+        </button>
+        <div class="footer">
+          <span>Let's Build </span>
+          <span>Incredibles 🚀</span>
+        </div>
+      </div>
+    </form>
+
+    <script>
+      function validateForm() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        let isValid = true;
+
+        if (email === '') {
+          document.getElementById('emailError').innerText =
+            'Email is a required field.';
+          isValid = false;
+        } else if (!emailRegex.test(email)) {
+          document.getElementById('emailError').innerText =
+            'Please enter a valid email address.';
+          isValid = false;
+        } else {
+          document.getElementById('emailError').innerText = '';
+        }
+
+        if (password === '') {
+          document.getElementById('passwordError').innerText =
+            'Password is a required field.';
+          isValid = false;
+        } else {
+          document.getElementById('passwordError').innerText = '';
+        }
+
+        if (isValid) {
+          document.getElementById('loginForm').submit();
+        }
+      }
+    </script>
+
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta3/js/bootstrap.min.js"
+      integrity="sha512-mp3VeMpuFKbgxm/XMUU4QQUcJX4AZfV5esgX72JQr7H7zWusV6lLP1S78wZnX2z9dwvywil1VHkHZAqfGOW7Nw=="
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

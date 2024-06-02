@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instructor • Arham Sayyed</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta3/css/bootstrap.min.css"
+      integrity="sha512-N415hCJJdJx+1UBfULt+i+ihvOn42V/kOjOpp1UTh4CZ70Hx5bDlKryWaqEKfY/8EYOu/C2MuyaluJryK1Lb5Q=="
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"><%= name %></a>
+        <!-- Logout button -->
+        <button class="btn btn-outline-danger" type="button" onclick="logout()">
+          logout
+        </button>
+      </div>
+    </nav>
+    <!-- End of Navbar -->
+    <h2 class="text-center my-3">Welcome back, <%= name %></h2>
+    <h4 class="text-center my-3 text-gray">
+      Here's the list of your lectures:
+    </h4>
+    <!-- Cards -->
+    <div class="card mb-3 mx-5" style="max-width: 540px">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img
+            src="https://www.cdmi.in/courses@2x/node-js-training-institute.jpg"
+            class="img-fluid rounded-start h-100 w-100"
+            alt="..."
+          />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title"><%= lecture Name %></h5>
+            <p class="card-text">
+                Course: <%= course Name %>
+            </p>
+            <p class="card-text">
+              <small class="text-muted">Scheduled on: <%= schedule %></small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function logout() {
+        fetch('/logout', {
+          method: 'GET',
+        })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+      }
+    </script>
+  </body>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta3/js/bootstrap.min.js"
+    integrity="sha512-mp3VeMpuFKbgxm/XMUU4QQUcJX4AZfV5esgX72JQr7H7zWusV6lLP1S78wZnX2z9dwvywil1VHkHZAqfGOW7Nw=="
+    crossorigin="anonymous"
+  ></script>
+</html>
