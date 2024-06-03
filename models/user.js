@@ -27,21 +27,30 @@ async function addUser(
   photoURL,
   role = 'instructor'
 ) {
-  const userRecord = await auth.createUser({
-    email,
-    password,
-    displayName,
-    photoURL,
-  });
+  console.log('addUser started execution');
 
-  if (userRecord.uid) {
-    await db
-      .collection('users')
-      .doc(userRecord.uid)
-      .set({ email, displayName, photoURL, role });
-    return userRecord.uid;
-  } else {
-    return false;
+  try {
+    const userRecord = await auth.createUser({
+      email,
+      password,
+      displayName,
+      photoURL,
+    });
+
+    if (userRecord.uid) {
+      await db
+        .collection('users')
+        .doc(userRecord.uid)
+        .set({ email, displayName, photoURL, role });
+      console.log('user added with uid: ', userRecord.uid);
+      return userRecord.uid;
+    } else {
+      console.log('user not added because of error: ', userRecord);
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
+    return error;
   }
 }
 // async function b() {

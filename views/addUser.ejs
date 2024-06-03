@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin • Arham Sayyed</title>
+    <title>Admin • <%= user.displayName %></title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta3/css/bootstrap.min.css"
@@ -53,12 +53,12 @@
 
     <!-- Side Navbar -->
     <div class="side-navbar">
-      <a href="/samples/admin.html">Dashboard</a>
-      <a href="instructors.html">view all instructors</a>
-      <a href="courses.html">view all courses</a>
-      <a href="addUser.html" class="active">add new user</a>
-      <a href="addNewCourse.html">add new Course</a>
-      <a href="/samples/logout">logout</a>
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/viewInstructors">view all instructors</a>
+        <a href="/admin/courses">view all courses</a>
+        <a href="/admin/addUser" class="active">add new user</a>
+        <a href="/admin/addNewCourse">add new Course</a>
+        <a href="/logout">logout</a>
     </div>
     <!-- End of Side Navbar -->
 
@@ -67,7 +67,7 @@
       <h1>Add New User</h1>
       <p>add a new user</p>
       <hr />
-      <form id="addUserForm" action="/addUser" method="post">
+      <form id="addUserForm" action="/admin/addUser" method="post">
         <div class="mb-3">
           <label for="displayName" class="form-label">Display Name</label>
           <input type="text" class="form-control" id="displayName" name="displayName" required />
@@ -104,6 +104,9 @@
     </div>
     <!-- End of Content Area -->
 
+    <!-- Toast Container -->
+    <div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1050;"></div>
+
     <script>
       function logout() {
         fetch('/logout', {
@@ -111,6 +114,7 @@
         })
           .then((res) => {
             console.log(res);
+            window.location.href = '/';
           })
           .catch((error) => {
             console.error('Error:', error);
@@ -134,21 +138,49 @@
         const formData = new FormData(form);
         const formObject = Object.fromEntries(formData.entries());
 
-        console.log(formObject);
-
-        // You can also submit the form using fetch if needed
         fetch(form.action, {
           method: form.method,
-          body: formData
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formObject)
         })
-        .then(response => response.json())
+        .then(response => response.json().then(data => ({ status: response.status, body: data })))
         .then(data => {
-          console.log('Success:', data);
+          showToast(data.status, data.body.message);
         })
         .catch((error) => {
           console.error('Error:', error);
+          showToast(500, 'Server error, please try again later.');
         });
       });
+
+      // Show toast notification
+      function showToast(statusCode, message) {
+        const toastContainer = document.getElementById('toastContainer');
+        const toastId = `toast-${Date.now()}`;
+        const toastClass = statusCode === 201 ? 'bg-success text-white' : 'bg-danger text-white';
+        const toastHTML = `
+          <div id="${toastId}" class="toast ${toastClass}" role="alert" aria-live="assertive" aria-atomic="true" style="min-width: 300px;">
+            <div class="toast-header">
+              <img src="https://http.cat/${statusCode}" class="rounded me-2" alt="HTTP Cat" style="width: 100px; height: 100px;">
+            <strong class="me-auto">${statusCode === 201 ? 'Success!' : 'Failed!'}</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+              ${message}
+            </div>
+          </div>
+        `;
+        toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+        const toastElement = new bootstrap.Toast(document.getElementById(toastId));
+        toastElement.show();
+
+        // Remove the toast after it hides
+        document.getElementById(toastId).addEventListener('hidden.bs.toast', function () {
+          this.remove();
+        });
+      }
     </script>
 
     <script

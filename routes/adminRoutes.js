@@ -10,4 +10,8 @@ router.get('/', adminControllers.getAdmin)
 // admin view instructors
 router.get('/viewInstructors', adminControllers.viewInstructors)
 
+// admin add user
+router.get('/addUser', adminControllers.getAddUserPage)
+router.post('/addUser', adminControllers.addNewUser)
+
 module.exports = router;
